@@ -1,0 +1,13 @@
+name: assignment2-11
+title: Assignment2-11
+username:
+account: luccabertoncini
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 526637
+bundleId: 1653789
+url: https://luccabertoncini.shinyapps.io/assignment2-11/
+when: 1540104260.15456
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: Assignment2.R|Untitled.R

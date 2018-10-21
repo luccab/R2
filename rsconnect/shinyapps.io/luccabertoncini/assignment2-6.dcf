@@ -1,0 +1,13 @@
+name: assignment2-6
+title: assignment2-6
+username:
+account: luccabertoncini
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 526601
+bundleId: 1653740
+url: https://luccabertoncini.shinyapps.io/assignment2-6/
+when: 1540099674.94237
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: Assignment2.R|nsw.dta|Untitled.R
