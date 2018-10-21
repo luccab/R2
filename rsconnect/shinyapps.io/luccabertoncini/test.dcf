@@ -1,0 +1,13 @@
+name: test
+title:
+username:
+account: luccabertoncini
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 455549
+bundleId: 1597673
+url: https://luccabertoncini.shinyapps.io/test/
+when: 1537527557.7181
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: ~$datasetforCS112.xlsx|app_test.R

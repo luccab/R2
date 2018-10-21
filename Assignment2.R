@@ -45,10 +45,13 @@ summary(lm.99) # V
 # Graph on 99 variables
 df1 <- data.frame(x1,x1.data)
 # Graphing the regression line and standard error without outlier
-ggplot(df1, aes(x=x1, y=x1.data)) + geom_point()+ geom_smooth(method=lm, se=TRUE, level=0.95)+
+ggplot(df1, aes(x=x1, y=x1.data)) + geom_point()+ geom_smooth(method=lm, se=TRUE, level=0.95) +
   ggtitle("Regression Line without the outlier") +
   xlab("Predictor") +
   ylab("Dependent variable")
+# Link to see it online (using R shiny)
+# the code for R shiny is provided on the git repo
+# https://luccabertoncini.shinyapps.io/assignment2/
 
 # Adding the outlier
 x2 <- append(x1, -200)
@@ -86,6 +89,7 @@ ggplot(df2, aes(x=x2, y=x2.data)) + geom_point()+ geom_smooth(method=lm, se=TRUE
   ggtitle("Regression Line with the outlier") +
   xlab("Predictor") +
   ylab("Dependent variable")
+# https://luccabertoncini.shinyapps.io/assignment2-2/
 
 # Graphing 2 lines at the same time with(blue) and without(red) the outlier
 ggplot(df2, aes(x=x2, y=x2.data)) + geom_point() + geom_smooth(method=lm, se=TRUE, level=0.95) + 
@@ -96,7 +100,7 @@ ggplot(df2, aes(x=x2, y=x2.data)) + geom_point() + geom_smooth(method=lm, se=TRU
   labs(caption = "As we can see a single outlier can have a big effect on the regression line. 
        So the outlier can hide an almost linear relationship and produce a line that will not be representative of the real data. 
        Outliers should be checked for errors, and in case of great impact on the regression line it is reasonable to remove it and report it explaining your results")
-
+# https://luccabertoncini.shinyapps.io/assignment2-3/
 
 #### Question 2 ####
 # NOTE: FOR THIS PROBLEM (AND THIS PROBLEM ONLY), USE ONLY THE CONTROL GROUP. 
@@ -169,27 +173,29 @@ for(age in c(17:55)) {
 }
 
 # Getting confidence intervals for re78 based on the simulated coefficients and variables at their percentila
-conf.intervals2 <- apply(storagedf_2, 2, quantile, probs = c(0.005, 0.995))
+conf.intervals2 <- apply(storagedf_2, 2, quantile, probs = c(0.025, 0.975))
 conf.intervals2
 
 # Graphing based on median for educ, re74, and re75 and age groups
-plot(x = c(1:100), y = c(1:100), type = "n", xlim = c(17,55), ylim = c(-15000,25000))
+plot(x = c(1:100), y = c(1:100), type = "n", xlim = c(17,55), ylim = c(-15000,25000), main="Earnings per Age group (other variables hold at their median)",xlab="Ages", ylab="95% confidence interval for re78 (earnings in 1978)")
 counter = 1
 for(age in c(17:55)) {
   segments(x0 = age,  y0 = conf.intervals1[counter], x1 = age, y1 = conf.intervals1[counter + 1], col = c("red"))
   counter = counter + 2
 }
+# https://luccabertoncini.shinyapps.io/assignment2-4/
 
 # Graphing based on .9 perfentile for educ, re74, and re75 and age groups
-plot(x = c(1:100), y = c(1:100), type = "n", xlim = c(17,55), ylim = c(-15000,25000))
+plot(x = c(1:100), y = c(1:100), type = "n", xlim = c(17,55), ylim = c(-15000,25000), main="Earnings per Age group (other variables hold at their .9 percentile)",xlab="Ages", ylab="95% confidence interval for re78 (earnings in 1978)")
 counter = 1
 for(age in c(17:55)) {
   segments(x0 = age,  y0 = conf.intervals2[counter], x1 = age, y1 = conf.intervals2[counter + 1], col = c("blue"))
   counter = counter + 2
 }
+# https://luccabertoncini.shinyapps.io/assignment2-5/
 
 # Graphing based on .9 perfentile and median for educ, re74, and re75 and age groups one above the other
-plot(x = c(1:100), y = c(1:100), type = "n", xlim = c(17,55), ylim = c(-15000,25000))
+plot(x = c(1:100), y = c(1:100), type = "n", xlim = c(17,55), ylim = c(-15000,25000), main="Earnings per Age group (.9 percentile (blue) median (red))",xlab="Ages", ylab="95% confidence interval for re78 (earnings in 1978)")
 counter = 1
 for(age in c(17:55)) {
   segments(x0 = age,  y0 = conf.intervals1[counter], x1 = age, y1 = conf.intervals1[counter + 1], col = c("red"))
@@ -200,6 +206,8 @@ for(age in c(17:55)) {
   segments(x0 = age,  y0 = conf.intervals2[counter], x1 = age, y1 = conf.intervals2[counter + 1], col = c("blue"))
   counter = counter + 2
 }
+# https://luccabertoncini.shinyapps.io/assignment2-6/
+
 # Creating the tables
 
 # Table with 95% percentiles (higher and lower bound) for each age group
@@ -238,7 +246,6 @@ table3
 
 library(foreign)
 library(Matching)
-library(boot)
 
 nsw <- read.dta("nsw.dta")
 
@@ -267,13 +274,20 @@ for(j in 1:nsims) {
 quantile(storage_intercept, na.rm = TRUE, c(0.025, 0.975))
 quantile(storage_treatment_effect, na.rm = TRUE, c(0.025, 0.975))
 
-# Making the histogram for treatment effect
-hist(storage_treatment_effect)
+# Making the histogram for intercept
+# The intercept value will be the 'final value' if the data was not assigned to treatment group. 
+# If it was assigned we should sum the treatment effect to the intercept to get the final value
+hist(storage_intercept, xlab = "Intercept value", main = "Histogram of intercept")
+# https://luccabertoncini.shinyapps.io/assignment2-7/
 
-#ggplot(as.data.frame(storage_treatment_effect), aes(x=storage_treatment_effect))+ geom_histogram()
+# Making the histogram for treatment effect
+hist(storage_treatment_effect, xlab = "Treatment effect value", main = "Histogram of treatment effect")
+# https://luccabertoncini.shinyapps.io/assignment2-8/
+
 
 # Since treat is the single predictor the treatment effect is what is going to the value, it will either be the intercept if assigned to control group or the intercept + treatment effect if assigned to treatment group.
-# So we can see that going to the treatment group can either increase or decrease your earnings in 1978 but it is much more likely to increase than decrease (since all the data is concentrated in 1000)
+# So we can see that going to the treatment group can either increase or decrease your earnings in 1978 but it is much more likely to increase than decrease (since all the data is concentrated around 1000).
+# Increasing or decreasing your earnings we can see that the treatment group can change a lot your earnings we can not predict if it will raise but it is more likely to increase since most of treatment effect is above 0.
 
 
 #### Question 4 ####
@@ -289,6 +303,7 @@ determination(predict(linear), nsw$re78)
 # We can see that both R2 values are 0.0048
 
 # Calculating the correlation between the variables and then squaring it
+# 1 line function -> executes quicker than making a lot of operations
 determination <- function(y, py) cor(y, py) ^ 2
 
 #### Question 5 ####
@@ -320,13 +335,29 @@ glinear <- glm(treat~age+education+black+hispanic+married+nodegree+re75, data=ns
 probs.glinear <- predict(glinear, nsw, "response")
 graphs <- cbind(nsw, probs.glinear)
 
-ggplot(nsw1, aes(x=probs.glinear[1:nt])) +geom_histogram(color= "red", fill="red")
-ggplot(nsw2, aes(x=probs.glinear[nt+1:length(nsw$treat)])) +geom_histogram(color= "blue", fill="blue")
+# Plotting the histogram only for treatment group
+ggplot(nsw1, aes(x=probs.glinear[1:nt])) +geom_histogram(color= "red", fill="red") +
+  ggtitle("Histogram of probabilities of being assigned to the treatment group, for variables that were indeed in the treatment group")+
+  xlab("Probabilities")+
+  ylab("Count")
+# https://luccabertoncini.shinyapps.io/assignment2-9/
+
+# Plotting the histogram only for control group
+ggplot(nsw2, aes(x=probs.glinear[nt+1:length(nsw$treat)])) +geom_histogram(color= "blue", fill="blue")+
+  ggtitle("Histogram of probabilities of being assigned to the treatment group, for variables that were in the control group")+
+  xlab("Probabilities")+
+  ylab("Count")
+# https://luccabertoncini.shinyapps.io/assignment2-10/
+
 # Putting both of them in the same graph and changing color for easy comparison
-ggplot(graphs , aes(x=probs.glinear, fill=factor(treat), color=factor(treat))) + geom_histogram(position="identity")+ ggtitle("Probability of being assigned to treatment group\n Treatment group in blue and control in red")+ylab("probabilities")
+ggplot(graphs , aes(x=probs.glinear, fill=factor(treat), color=factor(treat))) + geom_histogram(position="identity")+ 
+  ggtitle("Probability of being assigned to treatment group\n Treatment group in blue and control in red")+
+  xlab("Probabilities")+
+  ylab("Count")
+# https://luccabertoncini.shinyapps.io/assignment2-11/
 
 # We can see that the treatment group has higher probabilities, and more values above 0.5 than the control group, but those 2 groups do not have a big differente.
-# This mean that only those predictors it was not good enough to separate them appropriatelly in control and treatment group.
+# This mean that those predictors were not good enough to separate them appropriatelly in control and treatment group.
 # Although it was not enough we can see that there is more high probabilities in blue than in red in high values (meaning we predicted it to be from the treatment group)
 
 ### OPTIONAL QUESTION ###
@@ -340,13 +371,26 @@ data(lalonde)
 lalonde
 number_of_predictors <- sample(1:11, 1)
 
+predictors <- sample(c("age", "educ", "black", "hisp", "married", "nodegr", "re74", "re75", "u74", "u75", "treat", "age*educ"), number_of_predictors)
+predictors
+vars <- paste(predictors, collapse = ' + ')
+vars
+
 nsims <-1000
 storing_treatment_effect <- matrix(NA, nrow = nsims)
 storing_statistically_significant_treatment_effect <- matrix(NA, nrow = nsims)
-a = 1
 for(j in 1:nsims){
-  number_of_predictors <- sample(1:11, 1)
-  predictors <- sample(c("age", "educ", "black", "hisp", "married", "nodegr", "re74", "re75", "u74", "u75", "treat"), number_of_predictors)
+  number_of_predictors <- sample(1:66, 1)
+  predictors <- sample(c("age", "educ", "black", "hisp", "married", "nodegr", "re74", "re75", "u74", "u75", "treat", "age*educ","age*black","age*hisp","age*married","age*nodegr","age*re74", "age*re75", "age*u74","age*u75", "age*treat",
+                         "educ*black", "educ*hisp","educ*married","educ*nodegr", "educ*re74","educ*re75","educ*u74","educ*u75", "educ*treat",
+                         "black*hisp","black*married", "black*nodegr","black*re74","black*re75","black*u74","black*u75","black*treat",
+                         "hisp*married", "hisp*nodegr","hisp*re74","hisp*re75","hisp*u74","hisp*u75","hisp*treat",
+                         "married*nodegr", "married*re74","married*re75","married*u74","married*u75", "married*treat", 
+                         "nodegr*re74","nodegr*re75","nodegr*u74","nodegr*u75","nodegr*treat",
+                         "re74*re75","re74*u74","re74*u75","re74*treat",
+                         "re75*u74","re75*u75", "re75*treat",
+                         "u74*u75","u74*treat",
+                         "u75*treat"), number_of_predictors)
   vars <- paste(predictors, collapse = ' + ')
   equation <- paste0("re78 ~ ", vars)
   m2 <- lm(as.formula(equation), data=lalonde)
@@ -356,14 +400,27 @@ for(j in 1:nsims){
   x <- summary(m2)
   statistical <- pf(x$fstatistic[1], x$fstatistic[2], x$fstatistic[3],lower.tail = FALSE)
   if(statistical < 0.05){
-    storing_statistically_significant_treatment_effect[a] <- treatment_effect
-    a <- a + 1
+    storing_statistically_significant_treatment_effect[j] <- treatment_effect
   }
   
 }
 
-hist(storing_treatment_effect, xlim=c(-100,2000), ylim = c(0,1000))
+ggplot(as.data.frame(storing_treatment_effect), aes(x=storing_treatment_effect)) +geom_histogram(color= "blue", fill="blue")+ 
+  ggtitle("Treatment effect predicting re78 from lalonde (randomly selecting predictors)")+
+  xlab("Treatment Effect")+
+  ylab("Count")
+# https://luccabertoncini.shinyapps.io/assignment2-12/
 
-hist(na.omit(storing_statistically_significant_treatment_effect), xlim=c(-100,2000), ylim = c(0, 1000))
+ggplot(as.data.frame(na.omit(storing_statistically_significant_treatment_effect)), aes(x=na.omit(storing_statistically_significant_treatment_effect))) +geom_histogram(color= "blue", fill="blue")+ 
+  ggtitle("Statistically significants treatment effect predicting re78 from lalonde (randomly selecting predictors)")+
+  xlab("Treatment Effect")+
+  ylab("Count")
+# https://luccabertoncini.shinyapps.io/assignment2-13/
+
+# Given the graphs we can see that its almost independent on what predictors we use the treatment effect will almost always be near 1700.
+# If we use more predictors we should expect more results near 1700, and with fewer predictors fewer results.
+# If we only use one predictor in every prediction the results will be more biased to that predictor as we add more we remove this bias.
+
+# All the shiny code used to generate the graphs are disponible in this git repository
 
 
